@@ -30,12 +30,13 @@ wss.on("connection", function (socket) {
     socket.on("message",onMessage)
 
     function onMessage(data){
-        allConnectedSockets.forEach(
-            function(someSocket){
-                if (someSocket !== socket){
-                    someSocket.send(data);
-                }
-            });
+        if(data==messagetype.MOVEMENT){
+          socket.send("3");
+          console.log(data)
+        }else if(data==messagetype.ATTACK){
+            socket.send("2")
+        }
+        allConnectedSockets.forEach(function (someSocket) {if (someSocket !== socket) {someSocket.send(data);}});
       };
     socket.on("close", function () {
         var idx = allConnectedSockets.indexOf(socket);
