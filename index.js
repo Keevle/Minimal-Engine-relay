@@ -1,14 +1,18 @@
 var express = require("express"),
     WebSocket = require("uws"),
+    https = require('https'),
+    forceSsl = require('express-force-ssl'),
+    cors = require('cors'),
+    fs = require('fs')
     config = require(__dirname + "/config.json");
 
-var appResources = config.webRoot.indexOf("/") === 0 ? config.webRoot : __dirname + "/" + config.webRoot,
-    app = express(),
+var appResources = config.webRoot.indexOf("/") === 0 ? config.webRoot : __dirname + "/" + config.webRoot,app = express(),
     server = app.listen(config.port),
     wss = new WebSocket.Server({
         server: server
     });
-
+app.use(forceSsl)
+app.use(cors())
 app.use("/", express.static(appResources));
 console.log("Server listening on port " + config.port);
 
